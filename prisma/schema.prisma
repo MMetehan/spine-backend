@@ -1,0 +1,126 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Admin {
+  id        Int      @id @default(autoincrement())
+  username  String   @unique
+  password  String
+  createdAt DateTime @default(now())
+}
+
+model Team {
+  id        Int      @id @default(autoincrement())
+  name      String
+  title     String
+  bio       String?
+  imageUrl  String?
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+}
+
+model Treatment {
+  id        Int      @id @default(autoincrement())
+  title     String
+  slug      String   @unique
+  summary   String?
+  content   String?
+  imageUrl  String?
+  createdAt DateTime @default(now())
+}
+
+model Project {
+  id        Int      @id @default(autoincrement())
+  title     String
+  summary   String?
+  imageUrl  String?
+  link      String?
+  createdAt DateTime @default(now())
+}
+
+model Sponsor {
+  id          Int      @id @default(autoincrement())
+  name        String
+  description String?
+  logo        String? // sponsor logo URL
+  logoUrl     String? // deprecated, kept for backward compatibility  
+  website     String?
+  category    String   @default("technology") // technology, pharmaceutical, equipment, education, research
+  status      String   @default("active") // active, inactive
+  createdAt   DateTime @default(now())
+}
+
+model Research {
+  id          Int      @id @default(autoincrement())
+  title       String
+  content     String?
+  imageUrl    String?
+  createdAt   DateTime @default(now())
+  category    String?
+  doi         String?
+  keywords    String? // comma-separated keywords
+  publishDate String?
+  status      String? // draft, published
+  order       Int      @default(0)
+}
+
+model MediaItem {
+  id          Int      @id @default(autoincrement())
+  title       String
+  description String?
+  content     String?
+  type        String? // video, image, podcast, webinar
+  url         String? // video link or media url
+  mediaUrl    String? // deprecated, kept for backward compatibility
+  thumbnail   String?
+  category    String? // education, surgery, research, patient, conference
+  publishDate String? // DateTime type for proper date handling
+  status      String   @default("published") // published, draft, archived
+  createdAt   DateTime @default(now())
+}
+
+model Innovation {
+  id        Int      @id @default(autoincrement())
+  title     String
+  content   String?
+  type      String? // podcast, video, article, research, etc.
+  category  String? // support, education, research, technology, etc.
+  status    String   @default("draft") // draft, published, archived
+  team      String? // team member or department
+  startDate String? // project start date
+  image     String? // image URL
+  tags      String? // comma-separated tags
+  createdAt DateTime @default(now())
+}
+
+model News {
+  id          Int      @id @default(autoincrement())
+  title       String
+  content     String?
+  imageUrl    String?
+  createdAt   DateTime @default(now())
+  author      String?
+  category    String?
+  publishDate String?
+  status      String? // draft, published, archived
+  summary     String?
+  tags        String? // comma-separated tags
+}
+
+model Faq {
+  id        Int      @id @default(autoincrement())
+  question  String
+  answer    String
+  category  String   @default("general") // general, treatment, appointment, surgery, payment, insurance
+  order     Int      @default(0)
+  status    String   @default("active") // active, inactive
+  createdAt DateTime @default(now())
+}
