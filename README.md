@@ -1,4 +1,4 @@
-# Anatolian Spine Clinic Backend
+# Spine Clinic Backend
 
 <p align="center">
   <img src="https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=600&h=400&fit=crop" width="400" alt="Anatolian Spine Clinic" />
