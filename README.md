@@ -1,14 +1,13 @@
 # Spine Clinic Backend
 
 <p align="center">
-  <img src="https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=600&h=400&fit=crop" width="400" alt="Anatolian Spine Clinic" />
+  <img src="https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=600&h=400&fit=crop" width="400" alt="Spine Clinic" />
 </p>
-
 <p align="center">
   <b>Node.js + Express + Prisma + SQLite</b> <br>
-  <a href="https://github.com/MeetehanYildirim/anatolian-spine-backend"><img src="https://img.shields.io/github/stars/MeetehanYildirim/anatolian-spine-backend?style=social" alt="GitHub stars"></a>
-  <a href="https://github.com/MeetehanYildirim/anatolian-spine-backend"><img src="https://img.shields.io/github/issues/MeetehanYildirim/anatolian-spine-backend" alt="GitHub issues"></a>
-  <a href="https://github.com/MeetehanYildirim/anatolian-spine-backend"><img src="https://img.shields.io/github/license/MeetehanYildirim/anatolian-spine-backend" alt="License"></a>
+  <a href="https://github.com/MMetehan/spine-backend"><img src="https://img.shields.io/github/stars/MMetehan/spine-backend?style=social" alt="GitHub stars"></a>
+  <a href="https://github.com/MMetehan/spine-backend"><img src="https://img.shields.io/github/issues/MMetehan/spine-backend" alt="GitHub issues"></a>
+  <a href="https://github.com/MMetehan/spine-backend"><img src="https://img.shields.io/github/license/MMetehan/spine-backend" alt="License"></a>
 </p>
 
 ---
@@ -112,4 +111,4 @@ MIT
 
 ---
 
-> Anatolian Spine Clinic Backend - Modern, secure and fast API for spine clinic websites.
+> Spine Clinic Backend - Modern, secure and fast API for spine clinic websites.
