@@ -1,7 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const session = require('express-session');
-const SQLiteStore = require('connect-sqlite3')(session);
+const pgSession = require('connect-pg-simple')(session);
 const cors = require('cors');
 const helmet = require('helmet');
 const morgan = require('morgan');
@@ -54,13 +54,15 @@ app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
 // Session configuration
 app.use(session({
-    store: new SQLiteStore({
-        db: 'sessions.db',
-        dir: './prisma',
+    store: new pgSession({
+        conString: process.env.DATABASE_URL,
+        tableName: 'session', // Varsayılan tablo adı
+        createTableIfMissing: true // Otomatik tablo oluşturma (isteğe bağlı)
     }),
     secret: process.env.SESSION_SECRET || 'your-secret-key-change-this',
     resave: false,
     saveUninitialized: false,
+    sameSite: "none",
     cookie: {
         secure: process.env.NODE_ENV === 'production', // HTTPS in production
         httpOnly: true,

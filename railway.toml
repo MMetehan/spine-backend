@@ -1,0 +1,11 @@
+# railway.toml
+[build]
+  builder = "nixpacks"
+
+[deploy]
+  healthcheckPath = "/health"
+  healthcheckTimeout = 300
+  restartPolicyType = "on_failure"
+
+[environments.production]
+  variables = { NODE_ENV = "production" }
