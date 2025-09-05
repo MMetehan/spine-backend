@@ -43,9 +43,7 @@ const validateContact = [
  */
 const validateAppointment = [
     body('name')
-        .trim()
-        .isLength({ min: 2, max: 100 })
-        .withMessage('İsim 2-100 karakter arasında olmalıdır'),
+        .trim(),
     body('email')
         .isEmail()
         .normalizeEmail()
@@ -61,8 +59,8 @@ const validateAppointment = [
     body('message')
         .optional()
         .trim()
-        .isLength({ max: 1000 })
-        .withMessage('Mesaj maksimum 1000 karakter olabilir'),
+        .isLength({ max: 2000 })
+        .withMessage('Mesaj maksimum 2000 karakter olabilir'),
     handleValidationErrors,
 ];
 

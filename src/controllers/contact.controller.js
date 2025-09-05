@@ -5,10 +5,10 @@ const { sendContactMail, sendAppointmentMail } = require('../utils/mailer');
  */
 const submitContact = async (req, res) => {
     try {
-        const { name, email, subject, message } = req.body;
+        const { name, email, phone, subject, message } = req.body;
 
         // Send email
-        await sendContactMail({ name, email, subject, message });
+        await sendContactMail({ name, email, phone, subject, message });
 
         res.json({
             ok: true,
@@ -28,10 +28,32 @@ const submitContact = async (req, res) => {
  */
 const submitAppointment = async (req, res) => {
     try {
-        const { name, email, phone, preferredDate, message } = req.body;
+        const {
+            firstName,
+            lastName,
+            email,
+            phone,
+            preferredDate,
+            preferredTime,
+            department,
+            message,
+            consent
+        } = req.body;
+
+        // Combine first and last name
+        const fullName = `${firstName} ${lastName}`;
 
         // Send email
-        await sendAppointmentMail({ name, email, phone, preferredDate, message });
+        await sendAppointmentMail({
+            name: fullName,
+            email,
+            phone,
+            preferredDate,
+            preferredTime,
+            department,
+            message,
+            consent
+        });
 
         res.json({
             ok: true,
