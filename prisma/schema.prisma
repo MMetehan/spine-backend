@@ -46,6 +46,15 @@ model Project {
   createdAt DateTime @default(now())
 }
 
+model Education {
+  id        Int      @id @default(autoincrement())
+  title     String
+  summary   String?
+  imageUrl  String?
+  link      String?
+  createdAt DateTime @default(now())
+}
+
 model Sponsor {
   id          Int      @id @default(autoincrement())
   name        String
