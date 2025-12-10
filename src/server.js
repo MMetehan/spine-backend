@@ -105,7 +105,7 @@ app.get("/health", (req, res) => {
 
 // Redirect root to API docs
 app.get("/", (req, res) => {
-    res.redirect("/api-docs");
+  res.redirect("/api-docs");
 });
 
 // Sitemap and robots.txt (SEO)
