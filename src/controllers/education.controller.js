@@ -1,4 +1,4 @@
-const { PrismaClient } = require('@prisma/client');
+const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
 /**
@@ -9,12 +9,14 @@ const prisma = new PrismaClient();
 const getAllEducation = async (req, res) => {
   try {
     const education = await prisma.education.findMany({
-      orderBy: { createdAt: 'desc' }
+      orderBy: { createdAt: "desc" },
     });
     res.json(education);
   } catch (error) {
-    console.error('Error fetching education:', error);
-    res.status(500).json({ message: 'Eğitim içerikleri alınırken hata oluştu' });
+    console.error("Error fetching education:", error);
+    res
+      .status(500)
+      .json({ message: "Eğitim içerikleri alınırken hata oluştu" });
   }
 };
 
@@ -27,17 +29,17 @@ const getEducationById = async (req, res) => {
   try {
     const { id } = req.params;
     const education = await prisma.education.findUnique({
-      where: { id: parseInt(id) }
+      where: { id: parseInt(id) },
     });
 
     if (!education) {
-      return res.status(404).json({ message: 'Eğitim içeriği bulunamadı' });
+      return res.status(404).json({ message: "Eğitim içeriği bulunamadı" });
     }
 
     res.json(education);
   } catch (error) {
-    console.error('Error fetching education:', error);
-    res.status(500).json({ message: 'Eğitim içeriği alınırken hata oluştu' });
+    console.error("Error fetching education:", error);
+    res.status(500).json({ message: "Eğitim içeriği alınırken hata oluştu" });
   }
 };
 
@@ -55,14 +57,16 @@ const createEducation = async (req, res) => {
         title,
         summary,
         imageUrl,
-        link
-      }
+        link,
+      },
     });
 
     res.status(201).json(education);
   } catch (error) {
-    console.error('Error creating education:', error);
-    res.status(500).json({ message: 'Eğitim içeriği oluşturulurken hata oluştu' });
+    console.error("Error creating education:", error);
+    res
+      .status(500)
+      .json({ message: "Eğitim içeriği oluşturulurken hata oluştu" });
   }
 };
 
@@ -82,17 +86,19 @@ const updateEducation = async (req, res) => {
         title,
         summary,
         imageUrl,
-        link
-      }
+        link,
+      },
     });
 
     res.json(education);
   } catch (error) {
-    if (error.code === 'P2025') {
-      return res.status(404).json({ message: 'Eğitim içeriği bulunamadı' });
+    if (error.code === "P2025") {
+      return res.status(404).json({ message: "Eğitim içeriği bulunamadı" });
     }
-    console.error('Error updating education:', error);
-    res.status(500).json({ message: 'Eğitim içeriği güncellenirken hata oluştu' });
+    console.error("Error updating education:", error);
+    res
+      .status(500)
+      .json({ message: "Eğitim içeriği güncellenirken hata oluştu" });
   }
 };
 
@@ -106,16 +112,16 @@ const deleteEducation = async (req, res) => {
     const { id } = req.params;
 
     await prisma.education.delete({
-      where: { id: parseInt(id) }
+      where: { id: parseInt(id) },
     });
 
-    res.json({ message: 'Eğitim içeriği başarıyla silindi' });
+    res.json({ message: "Eğitim içeriği başarıyla silindi" });
   } catch (error) {
-    if (error.code === 'P2025') {
-      return res.status(404).json({ message: 'Eğitim içeriği bulunamadı' });
+    if (error.code === "P2025") {
+      return res.status(404).json({ message: "Eğitim içeriği bulunamadı" });
     }
-    console.error('Error deleting education:', error);
-    res.status(500).json({ message: 'Eğitim içeriği silinirken hata oluştu' });
+    console.error("Error deleting education:", error);
+    res.status(500).json({ message: "Eğitim içeriği silinirken hata oluştu" });
   }
 };
 
@@ -124,5 +130,5 @@ module.exports = {
   getEducationById,
   createEducation,
   updateEducation,
-  deleteEducation
+  deleteEducation,
 };

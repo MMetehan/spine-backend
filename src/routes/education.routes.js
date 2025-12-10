@@ -1,15 +1,17 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const { body, param } = require('express-validator');
-const { checkAuth } = require('../middlewares/auth.middleware');
-const { handleValidationErrors } = require('../middlewares/validation.middleware');
+const { body, param } = require("express-validator");
+const { checkAuth } = require("../middlewares/auth.middleware");
+const {
+  handleValidationErrors,
+} = require("../middlewares/validation.middleware");
 const {
   getAllEducation,
   getEducationById,
   createEducation,
   updateEducation,
-  deleteEducation
-} = require('../controllers/education.controller');
+  deleteEducation,
+} = require("../controllers/education.controller");
 
 /**
  * @swagger
@@ -66,7 +68,7 @@ const {
  *       500:
  *         description: Server error
  */
-router.get('/', getAllEducation);
+router.get("/", getAllEducation);
 
 /**
  * @swagger
@@ -93,8 +95,9 @@ router.get('/', getAllEducation);
  *       500:
  *         description: Server error
  */
-router.get('/:id', 
-  param('id').isInt({ min: 1 }).withMessage('Geçerli bir ID girin'),
+router.get(
+  "/:id",
+  param("id").isInt({ min: 1 }).withMessage("Geçerli bir ID girin"),
   handleValidationErrors,
   getEducationById
 );
@@ -147,13 +150,17 @@ router.get('/:id',
  *       500:
  *         description: Server error
  */
-router.post('/',
+router.post(
+  "/",
   checkAuth,
   [
-    body('title').notEmpty().trim().withMessage('Başlık gereklidir'),
-    body('summary').optional().trim(),
-    body('imageUrl').optional().isURL().withMessage('Geçerli bir resim URL\'si girin'),
-    body('link').optional().isURL().withMessage('Geçerli bir link girin')
+    body("title").notEmpty().trim().withMessage("Başlık gereklidir"),
+    body("summary").optional().trim(),
+    body("imageUrl")
+      .optional()
+      .isURL()
+      .withMessage("Geçerli bir resim URL'si girin"),
+    body("link").optional().isURL().withMessage("Geçerli bir link girin"),
   ],
   handleValidationErrors,
   createEducation
@@ -203,14 +210,18 @@ router.post('/',
  *       500:
  *         description: Server error
  */
-router.put('/:id',
+router.put(
+  "/:id",
   checkAuth,
   [
-    param('id').isInt({ min: 1 }).withMessage('Geçerli bir ID girin'),
-    body('title').notEmpty().trim().withMessage('Başlık gereklidir'),
-    body('summary').optional().trim(),
-    body('imageUrl').optional().isURL().withMessage('Geçerli bir resim URL\'si girin'),
-    body('link').optional().isURL().withMessage('Geçerli bir link girin')
+    param("id").isInt({ min: 1 }).withMessage("Geçerli bir ID girin"),
+    body("title").notEmpty().trim().withMessage("Başlık gereklidir"),
+    body("summary").optional().trim(),
+    body("imageUrl")
+      .optional()
+      .isURL()
+      .withMessage("Geçerli bir resim URL'si girin"),
+    body("link").optional().isURL().withMessage("Geçerli bir link girin"),
   ],
   handleValidationErrors,
   updateEducation
@@ -241,9 +252,10 @@ router.put('/:id',
  *       500:
  *         description: Server error
  */
-router.delete('/:id',
+router.delete(
+  "/:id",
   checkAuth,
-  param('id').isInt({ min: 1 }).withMessage('Geçerli bir ID girin'),
+  param("id").isInt({ min: 1 }).withMessage("Geçerli bir ID girin"),
   handleValidationErrors,
   deleteEducation
 );

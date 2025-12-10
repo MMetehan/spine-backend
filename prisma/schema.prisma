@@ -17,6 +17,12 @@ model Admin {
   createdAt DateTime @default(now())
 }
 
+model Session {
+  sid    String   @id
+  sess   Json
+  expire DateTime
+}
+
 model Team {
   id        Int      @id @default(autoincrement())
   name      String
