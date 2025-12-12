@@ -1,12 +1,12 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
 const {
   upload,
   uploadSingleFile,
   uploadMultipleFiles,
   deleteFile,
-  getFilesList
-} = require('../controllers/upload.controller');
+  getFilesList,
+} = require("../controllers/upload.controller");
 
 /**
  * @swagger
@@ -85,7 +85,7 @@ const {
  *       500:
  *         description: Server error
  */
-router.post('/', upload.single('file'), uploadSingleFile);
+router.post("/", upload.single("file"), uploadSingleFile);
 
 /**
  * @swagger
@@ -127,7 +127,7 @@ router.post('/', upload.single('file'), uploadSingleFile);
  *       500:
  *         description: Server error
  */
-router.post('/multiple', upload.array('files', 10), uploadMultipleFiles);
+router.post("/multiple", upload.array("files", 10), uploadMultipleFiles);
 
 /**
  * @swagger
@@ -154,7 +154,7 @@ router.post('/multiple', upload.array('files', 10), uploadMultipleFiles);
  *       500:
  *         description: Server error
  */
-router.get('/list', getFilesList);
+router.get("/list", getFilesList);
 
 /**
  * @swagger
@@ -177,6 +177,6 @@ router.get('/list', getFilesList);
  *       500:
  *         description: Server error
  */
-router.delete('/:filename', deleteFile);
+router.delete("/:filename", deleteFile);
 
 module.exports = router;

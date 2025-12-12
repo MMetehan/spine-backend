@@ -1,10 +1,10 @@
-const multer = require('multer');
-const path = require('path');
-const fs = require('fs');
-const crypto = require('crypto');
+const multer = require("multer");
+const path = require("path");
+const fs = require("fs");
+const crypto = require("crypto");
 
 // Railway volume path
-const UPLOAD_PATH = process.env.UPLOAD_PATH || '/uploads';
+const UPLOAD_PATH = process.env.UPLOAD_PATH || "/uploads";
 
 // Ensure upload directory exists
 if (!fs.existsSync(UPLOAD_PATH)) {
@@ -19,12 +19,12 @@ const storage = multer.diskStorage({
   },
   filename: (req, file, cb) => {
     // Generate unique filename with timestamp and random hash
-    const uniqueId = crypto.randomBytes(16).toString('hex');
+    const uniqueId = crypto.randomBytes(16).toString("hex");
     const timestamp = Date.now();
     const ext = path.extname(file.originalname);
     const filename = `${timestamp}-${uniqueId}${ext}`;
     cb(null, filename);
-  }
+  },
 });
 
 // File filter - Accept all file types
@@ -39,7 +39,7 @@ const upload = multer({
   fileFilter: fileFilter,
   limits: {
     fileSize: 10 * 1024 * 1024, // 10MB max file size
-  }
+  },
 });
 
 /**
@@ -52,31 +52,33 @@ const uploadSingleFile = async (req, res) => {
     if (!req.file) {
       return res.status(400).json({
         success: false,
-        message: 'Dosya yüklenmedi'
+        message: "Dosya yüklenmedi",
       });
     }
 
     // Generate file URL
-    const fileUrl = `${process.env.BACKEND_URL || 'http://localhost:4000'}/uploads/${req.file.filename}`;
+    const fileUrl = `${
+      process.env.BACKEND_URL || "http://localhost:4000"
+    }/uploads/${req.file.filename}`;
 
     res.status(200).json({
       success: true,
-      message: 'Dosya başarıyla yüklendi',
+      message: "Dosya başarıyla yüklendi",
       file: {
         filename: req.file.filename,
         originalName: req.file.originalname,
         size: req.file.size,
         mimetype: req.file.mimetype,
         url: fileUrl,
-        path: `/uploads/${req.file.filename}`
-      }
+        path: `/uploads/${req.file.filename}`,
+      },
     });
   } catch (error) {
-    console.error('❌ Upload error:', error);
+    console.error("❌ Upload error:", error);
     res.status(500).json({
       success: false,
-      message: 'Dosya yüklenirken hata oluştu',
-      error: error.message
+      message: "Dosya yüklenirken hata oluştu",
+      error: error.message,
     });
   }
 };
@@ -91,31 +93,31 @@ const uploadMultipleFiles = async (req, res) => {
     if (!req.files || req.files.length === 0) {
       return res.status(400).json({
         success: false,
-        message: 'Dosya yüklenmedi'
+        message: "Dosya yüklenmedi",
       });
     }
 
-    const baseUrl = process.env.BACKEND_URL || 'http://localhost:4000';
-    const files = req.files.map(file => ({
+    const baseUrl = process.env.BACKEND_URL || "http://localhost:4000";
+    const files = req.files.map((file) => ({
       filename: file.filename,
       originalName: file.originalname,
       size: file.size,
       mimetype: file.mimetype,
       url: `${baseUrl}/uploads/${file.filename}`,
-      path: `/uploads/${file.filename}`
+      path: `/uploads/${file.filename}`,
     }));
 
     res.status(200).json({
       success: true,
       message: `${files.length} dosya başarıyla yüklendi`,
-      files: files
+      files: files,
     });
   } catch (error) {
-    console.error('❌ Upload error:', error);
+    console.error("❌ Upload error:", error);
     res.status(500).json({
       success: false,
-      message: 'Dosyalar yüklenirken hata oluştu',
-      error: error.message
+      message: "Dosyalar yüklenirken hata oluştu",
+      error: error.message,
     });
   }
 };
@@ -134,7 +136,7 @@ const deleteFile = async (req, res) => {
     if (!fs.existsSync(filePath)) {
       return res.status(404).json({
         success: false,
-        message: 'Dosya bulunamadı'
+        message: "Dosya bulunamadı",
       });
     }
 
@@ -143,14 +145,14 @@ const deleteFile = async (req, res) => {
 
     res.status(200).json({
       success: true,
-      message: 'Dosya başarıyla silindi'
+      message: "Dosya başarıyla silindi",
     });
   } catch (error) {
-    console.error('❌ Delete error:', error);
+    console.error("❌ Delete error:", error);
     res.status(500).json({
       success: false,
-      message: 'Dosya silinirken hata oluştu',
-      error: error.message
+      message: "Dosya silinirken hata oluştu",
+      error: error.message,
     });
   }
 };
@@ -163,9 +165,9 @@ const deleteFile = async (req, res) => {
 const getFilesList = async (req, res) => {
   try {
     const files = fs.readdirSync(UPLOAD_PATH);
-    const baseUrl = process.env.BACKEND_URL || 'http://localhost:4000';
+    const baseUrl = process.env.BACKEND_URL || "http://localhost:4000";
 
-    const fileList = files.map(filename => {
+    const fileList = files.map((filename) => {
       const filePath = path.join(UPLOAD_PATH, filename);
       const stats = fs.statSync(filePath);
       return {
@@ -173,21 +175,21 @@ const getFilesList = async (req, res) => {
         size: stats.size,
         createdAt: stats.birthtime,
         url: `${baseUrl}/uploads/${filename}`,
-        path: `/uploads/${filename}`
+        path: `/uploads/${filename}`,
       };
     });
 
     res.status(200).json({
       success: true,
       count: fileList.length,
-      files: fileList
+      files: fileList,
     });
   } catch (error) {
-    console.error('❌ List files error:', error);
+    console.error("❌ List files error:", error);
     res.status(500).json({
       success: false,
-      message: 'Dosya listesi alınırken hata oluştu',
-      error: error.message
+      message: "Dosya listesi alınırken hata oluştu",
+      error: error.message,
     });
   }
 };
@@ -198,5 +200,5 @@ module.exports = {
   uploadMultipleFiles,
   deleteFile,
   getFilesList,
-  UPLOAD_PATH
+  UPLOAD_PATH,
 };
