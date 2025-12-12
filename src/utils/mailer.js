@@ -1,27 +1,12 @@
-const nodemailer = require("nodemailer");
+const { Resend } = require("resend");
 
-// SMTP transporter (Hostinger / Railway)
-const transporter = nodemailer.createTransport({
-  host: process.env.SMTP_HOST,
-  port: Number(process.env.SMTP_PORT) || 465,
-  secure: (process.env.SMTP_PORT || "465") === "465", // 465 -> TLS
-  auth: {
-    user: process.env.SMTP_USER,
-    pass: process.env.SMTP_PASS,
-  },
-});
+// Resend API client
+const resend = new Resend(process.env.RESEND_TOKEN);
 
-// Basit connection testi
-const testSMTPConnection = async () => {
-  try {
-    const info = await transporter.verify();
-    console.log("✅ SMTP connection OK");
-    return { success: true, info };
-  } catch (error) {
-    console.error("❌ SMTP connection failed:", error);
-    return { success: false, error: error.message };
-  }
-};
+console.log(
+  "[mailer] Resend initialized with token:",
+  process.env.RESEND_TOKEN ? "***set***" : "***missing***"
+);
 
 /**
  * Send contact form email via Resend
@@ -34,9 +19,17 @@ const testSMTPConnection = async () => {
  */
 const sendContactMail = async ({ name, email, phone, subject, message }) => {
   try {
-    const info = await transporter.sendMail({
-      from: process.env.SMTP_USER || "info@anatolianspine.com",
-      to: process.env.ADMIN_EMAIL_TO || "info@anatolianspine.com",
+    console.log("[mailer] sendContactMail via Resend", {
+      to: process.env.ADMIN_EMAIL_TO,
+      subject: `İletişim Formu: ${subject}`,
+      from: process.env.SMTP_USER,
+    });
+
+    const { data, error } = await resend.emails.send({
+      from: `Anatolian Spine <${
+        process.env.SMTP_USER || "info@anatolianspine.com"
+      }>`,
+      to: [process.env.ADMIN_EMAIL_TO || "info@anatolianspine.com"],
       subject: `İletişim Formu: ${subject}`,
       replyTo: email,
       html: `
@@ -76,8 +69,13 @@ ${message || ""}
       `,
     });
 
-    console.log("✅ Contact email sent via SMTP:", info.messageId);
-    return { success: true, messageId: info.messageId };
+    if (error) {
+      console.error("❌ Resend error sending contact email:", error);
+      throw new Error("E-posta gönderilirken bir hata oluştu");
+    }
+
+    console.log("✅ Contact email sent via Resend:", data.id);
+    return { success: true, messageId: data.id };
   } catch (error) {
     console.error("❌ Error sending contact email:", error);
     throw new Error("E-posta gönderilirken bir hata oluştu");
@@ -107,9 +105,17 @@ const sendAppointmentMail = async ({
   consent,
 }) => {
   try {
-    const info = await transporter.sendMail({
-      from: process.env.SMTP_USER || "info@anatolianspine.com",
-      to: process.env.ADMIN_EMAIL_TO || "info@anatolianspine.com",
+    console.log("[mailer] sendAppointmentMail via Resend", {
+      to: process.env.ADMIN_EMAIL_TO,
+      subject: `🏥 Yeni Randevu Talebi - ${name} (${department})`,
+      from: process.env.SMTP_USER,
+    });
+
+    const { data, error } = await resend.emails.send({
+      from: `Anatolian Spine <${
+        process.env.SMTP_USER || "info@anatolianspine.com"
+      }>`,
+      to: [process.env.ADMIN_EMAIL_TO || "info@anatolianspine.com"],
       subject: `🏥 Yeni Randevu Talebi - ${name} (${department})`,
       replyTo: email,
       html: `
@@ -173,8 +179,13 @@ ${message ? `💬 Ek Mesaj:\n${message}\n` : ""}
       `,
     });
 
-    console.log("✅ Appointment email sent via SMTP:", info.messageId);
-    return { success: true, messageId: info.messageId };
+    if (error) {
+      console.error("❌ Resend error sending appointment email:", error);
+      throw new Error("E-posta gönderilirken bir hata oluştu");
+    }
+
+    console.log("✅ Appointment email sent via Resend:", data.id);
+    return { success: true, messageId: data.id };
   } catch (error) {
     console.error("❌ Error sending appointment email:", error);
     throw new Error("E-posta gönderilirken bir hata oluştu");
@@ -185,5 +196,4 @@ ${message ? `💬 Ek Mesaj:\n${message}\n` : ""}
 module.exports = {
   sendContactMail,
   sendAppointmentMail,
-  testSMTPConnection,
 };
