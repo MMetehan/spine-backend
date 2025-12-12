@@ -24,7 +24,9 @@ const faqRoutes = require("./routes/faq.routes");
 const contactRoutes = require("./routes/contact.routes");
 const appointmentRoutes = require("./routes/appointment.routes");
 const sitemapRoutes = require("./routes/sitemap.routes");
+const uploadRoutes = require("./routes/upload.routes");
 
+const path = require("path");
 const app = express();
 const PORT = process.env.PORT || 4000;
 
@@ -57,6 +59,10 @@ if (process.env.NODE_ENV !== "production") {
 // Body parsing middleware
 app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ extended: true, limit: "10mb" }));
+
+// Serve static files from uploads directory (Railway Volume)
+const UPLOAD_PATH = process.env.UPLOAD_PATH || "/uploads";
+app.use("/uploads", express.static(UPLOAD_PATH));
 
 // Session configuration
 app.use(
@@ -125,6 +131,7 @@ app.use("/api/news", newsRoutes);
 app.use("/api/faq", faqRoutes);
 app.use("/api/contact", contactRoutes);
 app.use("/api/appointment", appointmentRoutes);
+app.use("/api/upload", uploadRoutes);
 
 // 404 handler
 app.use("*", (req, res) => {
