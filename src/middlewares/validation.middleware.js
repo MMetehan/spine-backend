@@ -149,10 +149,6 @@ const validateBasicContent = [
     .trim()
     .isLength({ min: 2, max: 200 })
     .withMessage("İsim 2-200 karakter arasında olmalıdır"),
-  body("content")
-    .optional()
-    .trim()
-    .withMessage("İçerik minimum 10 karakter olmalıdır"),
   body("description")
     .optional()
     .trim()
