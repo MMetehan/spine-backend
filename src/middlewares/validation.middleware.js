@@ -152,7 +152,6 @@ const validateBasicContent = [
   body("content")
     .optional()
     .trim()
-    .isLength({ min: 10 })
     .withMessage("İçerik minimum 10 karakter olmalıdır"),
   body("description")
     .optional()
